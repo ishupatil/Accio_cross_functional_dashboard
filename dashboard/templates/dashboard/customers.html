@@ -1,0 +1,170 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- ROW 1: PERFORMANCE CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Card 1: Mapped Buyers -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#0A192F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">MAPPED BUYER BASE</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ total_buyers|default:"5,000" }}</h3>
+            <span class="text-[10px] text-slate-500 mt-1 inline-block">Unique verified customers</span>
+        </div>
+
+        <!-- Card 2: Dominant Segment -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#4D7C0F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Dominant Class Segment</h6>
+            <h3 class="text-3xl font-extrabold text-[#4D7C0F]">{{ dominant_segment }}</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Represents 52.7% of gross sales</span>
+        </div>
+
+        <!-- Card 3: Highest AOV -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#C5A880] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Highest Segment AOV</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ highest_aov }}</h3>
+            <span class="text-[10px] text-[#C5A880] font-bold mt-1 inline-block">Budget segment averages highest ticket</span>
+        </div>
+
+        <!-- Card 4: Preferred Transaction Mode -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#64748B] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Preferred Purchase Mode</h6>
+            <h3 class="text-3xl font-extrabold text-slate-700">Finance (85.2%)</h3>
+            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Bank financing dominates operations</span>
+        </div>
+    </div>
+
+    <!-- ROW 2: CHART GRID (Payment splits & loan bank shares) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Payment Mode Pie -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-6 flex flex-col justify-between">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Payment Methods Share</h5>
+            <div id="chart-payment-donut" class="my-auto"></div>
+        </div>
+
+        <!-- Bank Shares Column -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-6 flex flex-col justify-between">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Financing Bank Market Share</h5>
+            <div id="chart-bank-columns" class="my-auto"></div>
+        </div>
+    </div>
+
+    <!-- ROW 3: CUSTOMER SEGMENT spend TABLE -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Customer Segment Revenue Contribution Details</h5>
+        <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Customer Segment Profile</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Orders Volume (Quantity)</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Total Mapped Revenue ($)</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Average Transaction Size (AOV)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                    {% for seg in segments_list %}
+                    <tr class="hover:bg-slate-50/80 border-b border-slate-100 transition-colors duration-150">
+                        <td class="px-6 py-4 text-sm font-semibold text-slate-800">{{ seg.customer_segment }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-500">{{ seg.orders_count }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-900 font-semibold">{{ seg.revenue_sum }}</td>
+                        <td class="px-6 py-4 text-sm text-emerald-600 font-extrabold">{{ seg.aov_mean }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHARTS INITIALIZATION -->
+<script>
+    const paymentModes = {{ payment_modes|safe }};
+    const paymentCounts = {{ payment_counts|safe }};
+    
+    const banks = {{ banks|safe }};
+    const bankCounts = {{ bank_counts|safe }};
+
+    // 1. PAYMENT METHODS DONUT
+    var paymentOptions = {
+        series: paymentCounts,
+        labels: paymentModes,
+        chart: {
+            type: 'donut',
+            height: 250,
+            fontFamily: 'Inter, sans-serif'
+        },
+        colors: ['#0A192F', '#C5A880', '#64748B'], // Navy, Champagne Gold, Muted Slate
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '60%',
+                    labels: {
+                        show: true,
+                        total: {
+                            show: true,
+                            label: 'Total Orders',
+                            formatter: function (w) {
+                                return w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) { return val.toFixed(1) + "%"; }
+        },
+        legend: {
+            position: 'bottom',
+            fontFamily: 'Inter',
+            labels: { colors: '#475569' }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-payment-donut"), paymentOptions).render();
+
+    // 2. FINANCING BANKS COLUMN CHART
+    var bankOptions = {
+        series: [{
+            name: 'Orders Financed',
+            data: bankCounts
+        }],
+        chart: {
+            type: 'bar',
+            height: 250,
+            fontFamily: 'Inter, sans-serif',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                columnWidth: '50%'
+            }
+        },
+        colors: ['#0A192F'],
+        grid: {
+            borderColor: '#F1F5F9'
+        },
+        xaxis: {
+            categories: banks,
+            labels: { style: { colors: '#64748B', fontSize: '10px' } }
+        },
+        yaxis: {
+            title: {
+                text: 'Orders Count',
+                style: { color: '#64748B', fontSize: '11px', fontWeight: 600 }
+            },
+            labels: { style: { colors: '#64748B' } }
+        },
+        tooltip: {
+            theme: 'light',
+            y: {
+                formatter: function (val) { return val + " loans approved"; }
+            }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-bank-columns"), bankOptions).render();
+</script>
+{% endblock %}

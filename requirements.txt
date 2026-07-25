@@ -1,0 +1,24 @@
+# Core Data Manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database Connectivity
+sqlalchemy>=2.0.36
+psycopg2-binary>=2.9.0
+
+# Environment Configuration
+python-dotenv>=1.0.0
+
+# Visualizations
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Jupyter Environment
+ipykernel>=6.0.0
+notebook>=7.0.0
+
+# Django Production Stack
+Django>=5.0.0
+gunicorn>=21.2.0
+whitenoise>=6.6.0
+dj-database-url>=2.1.0

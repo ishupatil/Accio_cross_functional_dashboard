@@ -1,0 +1,184 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- ROW 1: KPI SCORECARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- KPI 1: Total Showrooms -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#0A192F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Audited Showrooms</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ total_dealers }}</h3>
+            <span class="text-[10px] text-slate-500 mt-1 inline-block">200 active franchises national</span>
+        </div>
+
+        <!-- KPI 2: Average Commission Ratio -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#4D7C0F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Avg Commissions Ratio</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ avg_payout }}%</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Corporate target threshold: 15.0%</span>
+        </div>
+
+        <!-- KPI 3: Total Commissions Paid -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#9B2C2C] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Commissions Paid (YTD)</h6>
+            <h3 class="text-3xl font-extrabold text-[#9B2C2C]">${{ total_payout_m }}M</h3>
+            <span class="text-[10px] text-rose-700 font-bold mt-1 inline-block">Second highest corporate opex element</span>
+        </div>
+
+        <!-- KPI 4: Critical Outliers -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#C5A880] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Critical Outliers (>20%)</h6>
+            <h3 class="text-3xl font-extrabold text-[#9B2C2C]">{{ critical_count }}</h3>
+            <span class="text-[10px] text-rose-700 font-bold mt-1 inline-block">Flagged for scenario simulator audit</span>
+        </div>
+    </div>
+
+    <!-- ROW 2: LEDGER SEARCH & HIGHEST OUTFLOWS PLOT -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: Showroom Table with Search (Col Span: 8) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+                <div>
+                    <h5 class="text-sm font-bold text-slate-900 mb-0.5 tracking-tight">National Showroom Payouts Ledger</h5>
+                    <p class="text-slate-500 text-xxs">Audits full sales volume and payouts for all active dealer networks</p>
+                </div>
+                <div>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="🔍 Search showroom by name..."
+                        class="px-4 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 text-xs w-64 md:w-80 shadow-sm transition-all"
+                    >
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm max-h-[500px]">
+                <table class="w-full text-left border-collapse">
+                    <thead class="sticky top-0 z-10">
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Showroom Name</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Orders</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Sales Revenue</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Commissions Paid</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Payout Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="showrooms-tbody" class="divide-y divide-slate-100 bg-white">
+                        {% for dealer in showrooms_list %}
+                        <tr class="showroom-row hover:bg-slate-50/85 border-b border-slate-100 transition-colors duration-150">
+                            <td class="px-6 py-4 text-sm font-semibold text-slate-800 showroom-name">{{ dealer.dealer_name }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-500">{{ dealer.total_orders }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">{{ dealer.total_revenue }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-600">{{ dealer.total_commission }}</td>
+                            <td class="px-6 py-4 text-sm {% if dealer.payout_ratio_pct > 20 %}text-rose-600 font-bold{% else %}text-emerald-600 font-bold{% endif %}">
+                                {{ dealer.payout_ratio_pct }}%
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right: Outlier Bar Chart (Col Span: 4) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-4 flex flex-col justify-between">
+            <div>
+                <h5 class="text-sm font-bold text-slate-900 mb-0.5 tracking-tight">Critical Showrooms Comm. Ratios</h5>
+                <p class="text-slate-400 text-xxs mb-4">Top 15 showrooms exceeding the target 15% payout ratio limit</p>
+            </div>
+            <div id="chart-outliers" class="my-auto"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CLIENT-SIDE INTERACTIVITY SCRIPTS -->
+<script>
+    // 1. LIVE CLIENT-SIDE TABLE SEARCH FILTER (Instant JavaScript execution)
+    document.getElementById('search-input').addEventListener('keyup', function() {
+        const query = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.showroom-row');
+        
+        rows.forEach(row => {
+            const showroomName = row.querySelector('.showroom-name').innerText.toLowerCase();
+            if (showroomName.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+
+    // 2. APEXCHARTS HORIZONTAL BAR PLOT FOR OUTLIERS
+    const outlierNames = {{ outlier_names|safe }};
+    const outlierRatios = {{ outlier_ratios|safe }};
+
+    var barOptions = {
+        series: [{
+            name: 'Commission Ratio (%)',
+            data: outlierRatios
+        }],
+        chart: {
+            type: 'bar',
+            height: 480,
+            fontFamily: 'Inter, sans-serif',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                barHeight: '70%',
+                distributed: true,
+                horizontal: true,
+                borderRadius: 4
+            }
+        },
+        colors: ['#9B2C2C'], // Deep Burgundy
+        dataLabels: {
+            enabled: true,
+            textAnchor: 'start',
+            style: {
+                colors: ['#fff'],
+                fontSize: '10px',
+                fontWeight: 600
+            },
+            formatter: function (val) {
+                return val.toFixed(1) + "%";
+            },
+            offsetX: 0
+        },
+        xaxis: {
+            categories: outlierNames,
+            labels: {
+                show: true,
+                style: { colors: '#64748B', fontSize: '9px' }
+            },
+            max: 30
+        },
+        yaxis: {
+            labels: {
+                show: true,
+                style: { colors: '#475569', fontSize: '10px', fontWeight: 500 }
+            }
+        },
+        grid: {
+            borderColor: '#F1F5F9'
+        },
+        tooltip: {
+            theme: 'light',
+            x: { show: true },
+            y: {
+                formatter: function (val) {
+                    return val + "% commissions ratio";
+                }
+            }
+        },
+        legend: {
+            show: false
+        }
+    };
+
+    new ApexCharts(document.querySelector("#chart-outliers"), barOptions).render();
+</script>
+{% endblock %}

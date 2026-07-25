@@ -1,0 +1,194 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- ROW 1: KPI SCORECARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- KPI 1: Total Models -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#0A192F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Cataloged Vehicle Models</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ total_models }}</h3>
+            <span class="text-[10px] text-slate-500 mt-1 inline-block">Unique model lines YTD</span>
+        </div>
+
+        <!-- KPI 2: Total Variants -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#4D7C0F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Variant Configurations</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900 text-[#4D7C0F]">{{ total_variants }}</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Combinations of fuel & transmission</span>
+        </div>
+
+        <!-- KPI 3: Avg Safety Rating -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#C5A880] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Avg NCAP Safety Rating</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900 text-[#C5A880]">⭐ {{ avg_safety_rating }} / 5</h3>
+            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Corporate fleet average safety</span>
+        </div>
+
+        <!-- KPI 4: Dominant Fuel Type -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#64748B] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Dominant Fuel Variant</h6>
+            <h3 class="text-3xl font-extrabold text-slate-700">{{ dominant_fuel }}</h3>
+            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Ev & CNG options growing</span>
+        </div>
+    </div>
+
+    <!-- ROW 2: CHART GRID (Body distributions & Fuel splits) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Body Type Donut Chart -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-6 flex flex-col justify-between">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Sales Share by Body Type</h5>
+            <div id="chart-body-donut" class="my-auto"></div>
+        </div>
+
+        <!-- Fuel Type Column Chart -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-6 flex flex-col justify-between">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Sales Distribution by Fuel Option</h5>
+            <div id="chart-fuel-bar" class="my-auto"></div>
+        </div>
+    </div>
+
+    <!-- ROW 3: PRODUCT SPECIFICATIONS LEDGER TABLE -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Corporate Vehicle Variant Specifications Ledger</h5>
+        <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm max-h-[500px]">
+            <table class="w-full text-left border-collapse">
+                <thead class="sticky top-0 z-10">
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Model Name</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Variant</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Body Category</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Fuel Type</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Transmission</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Engine Capacity</th>
+                        <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">NCAP Rating</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                    {% for item in inventory_list %}
+                    <tr class="hover:bg-slate-50/80 border-b border-slate-100 transition-colors duration-150">
+                        <td class="px-6 py-4 text-sm font-semibold text-slate-800">{{ item.model_name }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600 font-medium">{{ item.variant_name }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-500">{{ item.body_type }}</td>
+                        <td class="px-6 py-4 text-sm">
+                            <span class="px-2 py-0.5 rounded text-xxs font-bold 
+                                {% if item.fuel_type == 'Electric' %}bg-emerald-50 text-emerald-700 border border-emerald-100
+                                {% elif item.fuel_type == 'Hybrid' %}bg-sky-50 text-sky-700 border border-sky-100
+                                {% else %}bg-slate-100 text-slate-700
+                                {% endif %}">
+                                {{ item.fuel_type }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-500">{{ item.transmission }}</td>
+                        <td class="px-6 py-4 text-sm text-slate-500">{{ item.engine_cc }} {% if item.engine_cc != 'N/A' %}cc{% endif %}</td>
+                        <td class="px-6 py-4 text-sm font-bold text-amber-500">
+                            {% if item.safety_rating == 5 %}⭐⭐⭐⭐⭐
+                            {% elif item.safety_rating == 4 %}⭐⭐⭐⭐
+                            {% elif item.safety_rating == 3 %}⭐⭐⭐
+                            {% else %}⭐⭐
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- INVENTORY CHARTS INITIALIZATION -->
+<script>
+    const bodyTypes = {{ body_types|safe }};
+    const bodyCounts = {{ body_counts|safe }};
+    
+    const fuelTypes = {{ fuel_types|safe }};
+    const fuelCounts = {{ fuel_counts|safe }};
+
+    // 1. SALES SHARE BY BODY CATEGORY DONUT
+    var bodyOptions = {
+        series: bodyCounts,
+        labels: bodyTypes,
+        chart: {
+            type: 'donut',
+            height: 250,
+            fontFamily: 'Inter, sans-serif'
+        },
+        colors: ['#0A192F', '#C5A880', '#64748B', '#94A3B8', '#CBD5E1', '#E2E8F0'],
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '60%',
+                    labels: {
+                        show: true,
+                        total: {
+                            show: true,
+                            label: 'Total Sales',
+                            formatter: function (w) {
+                                return w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) { return val.toFixed(1) + "%"; }
+        },
+        legend: {
+            position: 'bottom',
+            fontFamily: 'Inter',
+            labels: { colors: '#475569' }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-body-donut"), bodyOptions).render();
+
+    // 2. FUEL OPTIONS SALES COLUMN PLOT
+    var fuelOptions = {
+        series: [{
+            name: 'Cars Sold',
+            data: fuelCounts
+        }],
+        chart: {
+            type: 'bar',
+            height: 250,
+            fontFamily: 'Inter, sans-serif',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                columnWidth: '55%',
+                distributed: true
+            }
+        },
+        colors: ['#0A192F', '#C5A880', '#64748B', '#4D7C0F', '#9B2C2C'], // Navy, Champagne Gold, Slate, Muted Olive, Burgundy
+        grid: {
+            borderColor: '#F1F5F9'
+        },
+        xaxis: {
+            categories: fuelTypes,
+            labels: { style: { colors: '#64748B', fontSize: '10px' } }
+        },
+        yaxis: {
+            title: {
+                text: 'Units Sold',
+                style: { color: '#64748B', fontSize: '11px', fontWeight: 600 }
+            },
+            labels: { style: { colors: '#64748B' } }
+        },
+        legend: {
+            show: false
+        },
+        tooltip: {
+            theme: 'light',
+            y: {
+                formatter: function (val) { return val.toLocaleString() + " units"; }
+            }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-fuel-bar"), fuelOptions).render();
+</script>
+{% endblock %}

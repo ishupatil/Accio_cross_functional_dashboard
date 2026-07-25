@@ -1,0 +1,247 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- ROW 1: CORPORATE FINANCIAL KPI CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Card 1: Gross Revenue -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#0A192F] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Corporate Gross Revenue</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">${{ total_revenue_b }}B</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">↑ 12.4% vs last fiscal</span>
+        </div>
+        
+        <!-- Card 2: Operating Expenses -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#64748B] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Total Operating Outflows</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">${{ total_expenses_b }}B</h3>
+            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Commissions represent 29% of OpEx</span>
+        </div>
+
+        <!-- Card 3: Net profit -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#4D7C0F] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Corporate Net Earnings</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">${{ total_profit_b }}B</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">↑ 8.4% Net profit growth</span>
+        </div>
+
+        <!-- Card 4: Operating Net Margin -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#C5A880] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Operating Net Margin</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ net_margin }}%</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Target operating threshold: 45%</span>
+        </div>
+    </div>
+
+    <!-- ROW 2: CHART GRID (Revenues Trends & Regional Shares) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Monthly Trends Combo (Line + Columns) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-8">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Revenue Trends vs. Net Margin History</h5>
+            <div id="chart-monthly-combo"></div>
+        </div>
+
+        <!-- Regional Shares -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-4 flex flex-col justify-between">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Regional Revenue Contributions</h5>
+            <div id="chart-regional-donut" class="my-auto"></div>
+        </div>
+    </div>
+
+    <!-- ROW 3: DETAIL GRID (Showrooms Leaderboard & Expenses Allocations) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Top Showrooms Table -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-8">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Showrooms Leaderboard (Top 10 by Revenue)</h5>
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Showroom Name</th>
+                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Location</th>
+                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Orders</th>
+                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Sales Revenue</th>
+                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 uppercase tracking-wider">Payout Ratio</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        {% for dealer in top_dealers %}
+                        <tr class="hover:bg-slate-50/80 border-b border-slate-100 transition-colors duration-150">
+                            <td class="px-6 py-4 text-sm font-semibold text-slate-800">{{ dealer.dealer_name }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-500">{{ dealer.state_name }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-500">{{ dealer.total_orders }}</td>
+                            <td class="px-6 py-4 text-sm font-semibold text-slate-900">{{ dealer.total_revenue }}</td>
+                            <td class="px-6 py-4 text-sm {% if dealer.payout_ratio_pct > 20 %}text-rose-600 font-bold{% else %}text-emerald-600 font-bold{% endif %}">
+                                {{ dealer.payout_ratio_pct }}%
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Expense Allocation Donut -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-4 flex flex-col justify-between">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Operating Expenses Allocation (OpEx)</h5>
+            <div id="chart-expenses-donut" class="my-auto"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHARTS INITIALIZATION -->
+<script>
+    // Context Lists injected from views.py
+    const months = {{ months|safe }};
+    const revenues = {{ revenues|safe }};
+    const margins = {{ margins|safe }};
+    
+    const regions = {{ regions|safe }};
+    const regionRevenues = {{ region_revenues|safe }};
+    
+    const expenseLabels = {{ expense_labels|safe }};
+    const expenseValues = {{ expense_values|safe }};
+
+    // 1. MONTHLY TRENDS DUAL-AXIS COMBO
+    var comboOptions = {
+        series: [{
+            name: 'Net Revenue ($M)',
+            type: 'column',
+            data: revenues
+        }, {
+            name: 'Net Profit Margin (%)',
+            type: 'line',
+            data: margins
+        }],
+        chart: {
+            height: 320,
+            type: 'line',
+            fontFamily: 'Inter, sans-serif',
+            toolbar: { show: false }
+        },
+        stroke: {
+            width: [0, 3.5],
+            curve: 'smooth'
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 6,
+                columnWidth: '55%'
+            }
+        },
+        colors: ['#0A192F', '#C5A880'],
+        fill: {
+            opacity: [0.9, 1]
+        },
+        labels: months,
+        grid: {
+            borderColor: '#F1F5F9'
+        },
+        xaxis: {
+            labels: { style: { colors: '#64748B', fontSize: '10px' } }
+        },
+        yaxis: [{
+            title: {
+                text: 'Revenue ($ Millions)',
+                style: { color: '#64748B', fontSize: '11px', fontWeight: 600 }
+            },
+            labels: { style: { colors: '#64748B' } }
+        }, {
+            opposite: true,
+            title: {
+                text: 'Net Margin (%)',
+                style: { color: '#C5A880', fontSize: '11px', fontWeight: 600 }
+            },
+            labels: { style: { colors: '#C5A880' } },
+            max: 100,
+            min: 0
+        }],
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left',
+            fontFamily: 'Inter',
+            labels: { colors: '#475569' }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-monthly-combo"), comboOptions).render();
+
+    // 2. REGIONAL DONUT
+    var regionOptions = {
+        series: regionRevenues,
+        labels: regions,
+        chart: {
+            type: 'donut',
+            height: 240,
+            fontFamily: 'Inter, sans-serif'
+        },
+        colors: ['#0A192F', '#C5A880', '#64748B', '#94A3B8'],
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '60%',
+                    labels: {
+                        show: true,
+                        total: {
+                            show: true,
+                            label: 'Total Rev',
+                            formatter: function (w) {
+                                return '$' + w.globals.seriesTotals.reduce((a, b) => a + b, 0).toFixed(1) + 'M';
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) { return val.toFixed(1) + "%"; }
+        },
+        legend: {
+            position: 'bottom',
+            fontFamily: 'Inter',
+            labels: { colors: '#475569' }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-regional-donut"), regionOptions).render();
+
+    // 3. EXPENSES ALLOCATION DONUT
+    var expenseOptions = {
+        series: expenseValues,
+        labels: expenseLabels,
+        chart: {
+            type: 'donut',
+            height: 250,
+            fontFamily: 'Inter, sans-serif'
+        },
+        colors: ['#0A192F', '#C5A880', '#64748B', '#4D7C0F', '#9B2C2C', '#6366F1', '#CBD5E1'],
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '60%',
+                    labels: {
+                        show: true,
+                        total: {
+                            show: true,
+                            label: 'Total OpEx',
+                            formatter: function (w) {
+                                return '$' + w.globals.seriesTotals.reduce((a, b) => a + b, 0).toFixed(1) + 'M';
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        legend: {
+            position: 'bottom',
+            fontFamily: 'Inter',
+            labels: { colors: '#475569' }
+        }
+    };
+    new ApexCharts(document.querySelector("#chart-expenses-donut"), expenseOptions).render();
+</script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- REGION DROPDOWN SELECTOR PANEL -->
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex justify-between items-center mb-6">
+        <div>
+            <h5 class="text-sm font-bold text-slate-900 tracking-tight">Geographic Operations Hub</h5>
+            <p class="text-slate-500 text-xxs">Drill down into local state sales volumes and showroom payouts</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Active Region:</span>
+            <select 
+                id="region-selector" 
+                class="px-4 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 text-xs w-48 shadow-sm font-bold text-slate-700 cursor-pointer"
+                onchange="navigateToRegion(this.value)"
+            >
+                <option value="North" {% if selected_region == "North" %}selected{% endif %}>North Region</option>
+                <option value="West" {% if selected_region == "West" %}selected{% endif %}>West Region</option>
+                <option value="South" {% if selected_region == "South" %}selected{% endif %}>South Region</option>
+                <option value="East" {% if selected_region == "East" %}selected{% endif %}>East Region</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- ROW 1: REGIONAL CARD KPI SCORECARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- KPI 1: Orders -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#0A192F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Regional Orders Volume</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ orders_count }}</h3>
+            <span class="text-[10px] text-slate-500 mt-1 inline-block">Total orders processed in region</span>
+        </div>
+
+        <!-- KPI 2: Sales Revenue -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#4D7C0F] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Gross Regional Revenue</h6>
+            <h3 class="text-3xl font-extrabold text-[#4D7C0F]">${{ revenue_sum_m }}M</h3>
+            <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Total sales volume in region</span>
+        </div>
+
+        <!-- KPI 3: AOV -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#C5A880] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Average Order Size (AOV)</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">${{ aov_mean_m }}M</h3>
+            <span class="text-[10px] text-[#C5A880] font-bold mt-1 inline-block">Average transaction values</span>
+        </div>
+
+        <!-- KPI 4: Showrooms Mapped -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#64748B] hover:shadow-md transition-all duration-200">
+            <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Active Dealerships Mapped</h6>
+            <h3 class="text-3xl font-extrabold text-slate-900">{{ active_dealers }}</h3>
+            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Showrooms operating in region</span>
+        </div>
+    </div>
+
+    {% if orders_count > 0 %}
+    <!-- ROW 2: DRILL-DOWN CHART & LOCAL SHOWROOMS LEADERBOARD -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: Sales volume by state (Col Span: 7) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-7">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight" id="state-chart-title">Sales Volume by State</h5>
+            <div id="chart-state-sales"></div>
+        </div>
+
+        <!-- Right: Top showrooms in selected region (Col Span: 5) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-5">
+            <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Top Showrooms Leaderboard</h5>
+            <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200">
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Showroom</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">State</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Orders</th>
+                            <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        {% for d in regional_top_dealers %}
+                        <tr class="hover:bg-slate-50/80 transition-colors">
+                            <td class="px-6 py-4 text-sm font-semibold text-slate-800">{{ d.dealer_name }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-500">{{ d.state_name }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-500">{{ d.total_ord }}</td>
+                            <td class="px-6 py-4 text-sm font-semibold text-slate-900">{{ d.total_rev }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm text-center">
+        <h4 class="text-md font-bold text-slate-800">No Sales Records Found</h4>
+        <p class="text-slate-500 text-xs mt-1">There are no mapped transactions in the selected region for this period.</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- GEOGRAPHIC SCRIPTS -->
+<script>
+    // 1. DYNAMIC REGIONAL REDIRECT (GET query parameters)
+    function navigateToRegion(value) {
+        window.location.href = "?region=" + value;
+    }
+
+    // 2. STATE SALES BAR CHART
+    {% if orders_count > 0 %}
+    const stateNames = {{ state_names|safe }};
+    const stateSales = {{ state_sales_m|safe }};
+    
+    var stateChartOptions = {
+        series: [{
+            name: 'Revenue ($M)',
+            data: stateSales
+        }],
+        chart: {
+            type: 'bar',
+            height: 300,
+            fontFamily: 'Inter, sans-serif',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 5,
+                columnWidth: '70%',
+                dataLabels: {
+                    position: 'top'
+                }
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return "$" + val.toFixed(1) + "M";
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '10px',
+                fontWeight: 700,
+                colors: ['#1E293B']
+            }
+        },
+        colors: ['#0A192F'], // Midnight Navy
+        grid: {
+            borderColor: '#F1F5F9'
+        },
+        xaxis: {
+            categories: stateNames,
+            labels: { style: { colors: '#64748B', fontSize: '10px' } }
+        },
+        yaxis: {
+            title: {
+                text: 'Revenue ($ Millions)',
+                style: { color: '#64748B', fontSize: '11px', fontWeight: 600 }
+            },
+            labels: { style: { colors: '#64748B' } }
+        },
+        tooltip: {
+            theme: 'light',
+            y: {
+                formatter: function (val) { return "$" + val + "M"; }
+            }
+        }
+    };
+    
+    new ApexCharts(document.querySelector("#chart-state-sales"), stateChartOptions).render();
+    {% endif %}
+</script>
+{% endblock %}

@@ -1,0 +1,544 @@
+
+ 
+ 
+Finance Dashboard Data Dictionary
+ 
+ 
+Cross Functional BI Dataset
+ 
+ 
+ 
+ 
+ 
+Purpose
+ 
+This document serves as a reference guide for:
+ 
+Understanding business data
+ 
+Identifying joins
+ 
+Defining KPIs
+ 
+Creating SQL queries
+ 
+Building Streamlit dashboards
+ 
+ 
+ 
+ 
+Schema: Finance
+ 
+ 
+Table: payments
+ 
+Business Purpose:
+ 
+Stores customer payment transactions and revenue information.
+ 
+Column
+Business Meaning
+Example Use
+payment_id
+Unique payment identifier
+Primary Key
+order_id
+Related order
+Join with sales.orders
+cust_id
+Customer making payment
+Join with customers
+amount
+Payment amount
+Revenue KPI
+status
+Payment status
+Success Rate
+refund_reason
+Refund explanation
+Refund Analysis
+refunded_at
+Refund date
+Refund Trends
+ 
+Business KPIs:
+ 
+Total Revenue
+ 
+Refund Rate
+ 
+Payment Success Rate
+ 
+ 
+ 
+ 
+Table: expenses
+ 
+Business Purpose:
+ 
+Stores company expense transactions.
+ 
+Column
+Business Meaning
+Example Use
+expense_id
+Unique expense record
+Primary Key
+expense_date
+Date of expense
+Time Analysis
+exp_cat_id
+Expense category
+Join with Expense Category
+amount
+Expense amount
+Cost Analysis
+description
+Expense details
+Expense Review
+ 
+Business KPIs:
+ 
+Total Expenses
+ 
+Expense Trend
+ 
+Expense by Category
+ 
+ 
+ 
+ 
+Table: payment_modes
+ 
+Business Purpose:
+ 
+Lookup table for payment methods.
+ 
+Column
+Business Meaning
+mode_id
+Payment mode ID
+mode_name
+Payment method name
+ 
+Examples:
+ 
+UPI
+ 
+Cash
+ 
+Credit Card
+ 
+Debit Card
+ 
+Business KPIs:
+ 
+Revenue by Payment Mode
+ 
+ 
+ 
+ 
+Table: accounts
+ 
+Business Purpose:
+ 
+Stores company financial accounts.
+ 
+Column
+Business Meaning
+account_id
+Account identifier
+account_holder
+Account owner
+account_type
+Type of account
+balance
+Current balance
+ 
+Business KPIs:
+ 
+Account Balance
+ 
+Cash Position
+ 
+ 
+ 
+ 
+Table: transfer_log
+ 
+Business Purpose:
+ 
+Tracks internal fund transfers.
+ 
+Column
+Business Meaning
+transfer_id
+Transfer identifier
+from_account
+Source account
+to_account
+Destination account
+amount
+Transfer amount
+status
+Transfer status
+ 
+Business KPIs:
+ 
+Transfer Success Rate
+ 
+ 
+ 
+ 
+ 
+Schema: Sales
+ 
+ 
+Table: orders
+ 
+Business Purpose:
+ 
+Stores customer order information.
+ 
+Column
+Business Meaning
+Example Use
+order_id
+Order identifier
+Primary Key
+customer_id
+Customer placing order
+Join with Customers
+store_id
+Store handling order
+Join with Stores
+payment_mode_id
+Payment method
+Join with Payment Modes
+order_date
+Order date
+Revenue Trend
+order_amount
+Order value
+Revenue KPI
+ 
+Business KPIs:
+ 
+Total Orders
+ 
+Average Order Value
+ 
+ 
+ 
+ 
+Table: order_items
+ 
+Business Purpose:
+ 
+Stores products within orders.
+ 
+Column
+Business Meaning
+order_item_id
+Unique order item
+order_id
+Related order
+product_id
+Product sold
+quantity
+Quantity sold
+unit_price
+Product price
+ 
+Business KPIs:
+ 
+Product Sales
+ 
+Product Revenue
+ 
+ 
+ 
+ 
+ 
+Schema: Customers
+ 
+ 
+Table: customers
+ 
+Business Purpose:
+ 
+Stores customer master information.
+ 
+Column
+Business Meaning
+customer_id
+Customer identifier
+customer_name
+Customer name
+city
+Customer city
+state
+Customer state
+segment
+Customer segment
+ 
+Business KPIs:
+ 
+Active Customers
+ 
+Customer Lifetime Value
+ 
+ 
+ 
+ 
+ 
+Schema: Stores
+ 
+ 
+Table: stores
+ 
+Business Purpose:
+ 
+Stores physical store information.
+ 
+Column
+Business Meaning
+store_id
+Store identifier
+store_name
+Store name
+city
+Store city
+region
+Store region
+ 
+Business KPIs:
+ 
+Revenue by Store
+ 
+Revenue by Region
+ 
+ 
+ 
+ 
+ 
+Schema: Core
+ 
+ 
+Table: dim_expense_category
+ 
+Business Purpose:
+ 
+Classifies expenses into business categories.
+ 
+Column
+Business Meaning
+exp_cat_id
+Category ID
+expense_category
+Category Name
+ 
+Examples:
+ 
+Payroll
+ 
+Marketing
+ 
+Operations
+ 
+Infrastructure
+ 
+Travel
+ 
+Business KPIs:
+ 
+Expense Distribution
+ 
+ 
+ 
+ 
+ 
+Join Dictionary
+ 
+ 
+Revenue Analysis
+ 
+ 
+ 
+ 
+payments.order_id
+ 
+orders.order_id
+ 
+Purpose:
+ 
+Revenue and Order Analytics
+ 
+ 
+ 
+Customer Revenue Analysis
+ 
+ 
+ 
+ 
+payments.cust_id
+ 
+customers.customer_id
+ 
+Purpose:
+ 
+Revenue by Customer
+ 
+Revenue by State
+ 
+ 
+ 
+Store Revenue Analysis
+ 
+ 
+ 
+ 
+orders.store_id
+ 
+stores.store_id
+ 
+Purpose:
+ 
+Revenue by Store
+ 
+Revenue by Region
+ 
+ 
+ 
+Payment Analysis
+ 
+ 
+ 
+ 
+orders.payment_mode_id
+ 
+payment_modes.mode_id
+ 
+Purpose:
+ 
+Revenue by Payment Method
+ 
+ 
+ 
+Expense Analysis
+ 
+ 
+ 
+ 
+expenses.exp_cat_id
+ 
+dim_expense_category.exp_cat_id
+ 
+Purpose:
+ 
+Expense Category Reporting
+ 
+ 
+ 
+ 
+Fact Tables
+ 
+Fact tables contain transactions.
+ 
+finance.payments
+ 
+finance.expenses
+ 
+sales.orders
+ 
+sales.order_items
+ 
+ 
+ 
+ 
+Dimension Tables
+ 
+Dimension tables provide business context.
+ 
+customers.customers
+ 
+stores.stores
+ 
+finance.payment_modes
+ 
+core.dim_expense_category
+ 
+ 
+ 
+ 
+Recommended Dashboard KPIs
+ 
+Revenue KPIs
+ 
+Total Revenue
+ 
+Monthly Revenue
+ 
+Revenue Growth
+ 
+Expense KPIs
+ 
+Total Expenses
+ 
+Expense Growth
+ 
+Profitability KPIs
+ 
+Net Profit
+ 
+Profit Margin
+ 
+Customer KPIs
+ 
+Active Customers
+ 
+Top Customers
+ 
+Payment KPIs
+ 
+Payment Success Rate
+ 
+Revenue by Payment Mode
+ 
+Refund KPIs
+ 
+Refund Amount
+ 
+Refund Rate
+ 
+ 
+ 
+ 
+Next Enhancement
+ 
+Once actual PostgreSQL table columns are explored, update this document with:
+ 
+Data Types
+ 
+Primary Keys
+ 
+Foreign Keys
+ 
+Row Counts
+ 
+Null Counts
+ 
+Sample Values
+ 
+This will become the final enterprise Data Dictionary.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Operations & Financial Dashboard - Secure Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A192F; /* Deep Midnight Navy */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md p-8 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl space-y-6">
+        
+        <div class="text-center space-y-2">
+            <h1 class="text-xl font-extrabold text-[#C5A880] tracking-wide leading-tight">Executive Operations & Financial Dashboard</h1>
+            <p class="text-xs text-slate-400">Sign in to access the Executive Control Tower</p>
+        </div>
+
+        {% if form.errors %}
+        <div class="p-3 bg-red-950 border border-red-800 text-red-400 text-xs rounded-lg font-medium">
+            Your username and password didn't match. Please try again.
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}" class="space-y-4">
+            {% csrf_token %}
+            
+            <!-- Username Input -->
+            <div class="space-y-1.5">
+                <label for="id_username" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Username</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="id_username" 
+                    required 
+                    placeholder="Enter your username"
+                    class="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C5A880] text-sm"
+                >
+            </div>
+
+            <!-- Password Input -->
+            <div class="space-y-1.5">
+                <label for="id_password" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="id_password" 
+                    required 
+                    placeholder="••••••••"
+                    class="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C5A880] text-sm"
+                >
+            </div>
+
+            <button 
+                type="submit" 
+                class="w-full py-2.5 bg-[#C5A880] hover:bg-[#B89047] text-slate-900 font-extrabold rounded-lg shadow-md transition-colors text-sm uppercase tracking-wider"
+            >
+                Authorize & Enter
+            </button>
+        </form>
+
+        <div class="text-center pt-2">
+            <p class="text-xxs text-slate-500">Confidential Corporate Portal. Unauthorized access is audited.</p>
+        </div>
+        
+    </div>
+
+</body>
+</html>

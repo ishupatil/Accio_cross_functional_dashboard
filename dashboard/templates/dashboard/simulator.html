@@ -1,0 +1,251 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<div class="space-y-6">
+
+    <!-- TWO-COLUMN GRID LAYOUT -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- LEFT COLUMN: INPUT SLIDER CONTROLS (Col Span: 4) -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm lg:col-span-4 flex flex-col justify-between">
+            <div>
+                <h5 class="text-sm font-bold text-slate-900 mb-6 tracking-tight">Scenario Variables Configuration</h5>
+                
+                <!-- Slider 1: Commission Cap -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="comm-slider" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dealer Commission Cap</label>
+                        <span id="label-comm" class="bg-[#F4EFE6] text-[#B89047] px-2 py-0.5 rounded text-xs font-bold border border-[#E8DFD0]">20% Cap</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="comm-slider" 
+                        min="5" 
+                        max="30" 
+                        value="20" 
+                        class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#C5A880]"
+                    >
+                    <p class="text-[10px] text-slate-400 mt-1">Caps payout-to-revenue ratio thresholds for all dealerships.</p>
+                </div>
+                
+                <!-- Slider 2: Logistics Cost Change -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="log-slider" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Logistics Cost Change</label>
+                        <span id="label-log" class="bg-[#F4EFE6] text-[#B89047] px-2 py-0.5 rounded text-xs font-bold border border-[#E8DFD0]">0% Change</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="log-slider" 
+                        min="-20" 
+                        max="50" 
+                        step="5"
+                        value="0" 
+                        class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#C5A880]"
+                    >
+                    <p class="text-[10px] text-slate-400 mt-1">Simulates shipping, parts freight, or logistics cost fluctuations.</p>
+                </div>
+                
+                <!-- Slider 3: Marketing Cost Change -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="mkt-slider" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Marketing Budget Adjustment</label>
+                        <span id="label-mkt" class="bg-[#F4EFE6] text-[#B89047] px-2 py-0.5 rounded text-xs font-bold border border-[#E8DFD0]">0% Adjustment</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="mkt-slider" 
+                        min="-50" 
+                        max="100" 
+                        step="10"
+                        value="0" 
+                        class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#C5A880]"
+                    >
+                    <p class="text-[10px] text-slate-400 mt-1">Simulates corporate marketing campaigns or local dealer promo budgets.</p>
+                </div>
+            </div>
+            
+            <div class="pt-4 border-t border-slate-100 text-xxs text-slate-400">
+                Calculations computed client-side using row-level pre-processed data lookups.
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: SIMULATION OUTPUTS & PLOT (Col Span: 8) -->
+        <div class="lg:col-span-8 space-y-6">
+            <!-- Simulated Metric Variance Banner -->
+            <div id="variance-banner" class="p-6 rounded-2xl border transition-all duration-300 shadow-sm bg-emerald-50 border-emerald-200">
+                <span id="variance-badge" class="px-2.5 py-1 rounded-full text-xxs font-extrabold uppercase tracking-wide bg-emerald-100 text-emerald-800">
+                    PROFIT STABLE FORECAST
+                </span>
+                
+                <div class="flex flex-col md:flex-row mt-4 space-y-4 md:space-y-0">
+                    <div class="flex-1">
+                        <p class="text-slate-400 text-xxs uppercase tracking-wider mb-0.5">Simulated Net Profit</p>
+                        <h4 id="lbl-sim-profit" class="text-2xl font-black text-slate-900">${{ baseline_net_profit_b }}B</h4>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-slate-400 text-xxs uppercase tracking-wider mb-0.5">Simulated Margin</p>
+                        <h4 id="lbl-sim-margin" class="text-2xl font-black text-slate-900">{{ baseline_margin }}%</h4>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-slate-400 text-xxs uppercase tracking-wider mb-0.5">Scenario Profit Variance</p>
+                        <h4 id="lbl-sim-variance" class="text-2xl font-black text-emerald-600">$0.0M</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Bar Plot -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h5 class="text-sm font-bold text-slate-900 mb-4 tracking-tight">Ledger Comparison: Baseline vs. Simulated</h5>
+                <div id="chart-comparison"></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- REAL-TIME JS CALCULATIONS ENGINE -->
+<script>
+    // Raw numeric constants injected from Django controller
+    const rawRevenue = {{ raw_revenue }};
+    const rawExpenses = {{ raw_expenses }};
+    const rawNetProfit = {{ raw_net_profit }};
+    const rawLogistics = {{ raw_logistics }};
+    const rawMarketing = {{ raw_marketing }};
+    const commSavings = {{ comm_savings_json|safe }};
+
+    // DOM Element handles
+    const commSlider = document.getElementById('comm-slider');
+    const logSlider = document.getElementById('log-slider');
+    const mktSlider = document.getElementById('mkt-slider');
+    
+    const labelComm = document.getElementById('label-comm');
+    const labelLog = document.getElementById('label-log');
+    const labelMkt = document.getElementById('label-mkt');
+    
+    const varianceBanner = document.getElementById('variance-banner');
+    const varianceBadge = document.getElementById('variance-badge');
+    const lblSimProfit = document.getElementById('lbl-sim-profit');
+    const lblSimMargin = document.getElementById('lbl-sim-margin');
+    const lblSimVariance = document.getElementById('lbl-sim-variance');
+
+    // 1. Initial Comparison Bar Chart setup
+    var chartOptions = {
+        series: [{
+            name: 'Baseline Ledger',
+            data: [(rawRevenue/1e9).toFixed(2), (rawExpenses/1e9).toFixed(2), (rawNetProfit/1e9).toFixed(2)]
+        }, {
+            name: 'Simulated Scenario',
+            data: [(rawRevenue/1e9).toFixed(2), (rawExpenses/1e9).toFixed(2), (rawNetProfit/1e9).toFixed(2)]
+        }],
+        chart: {
+            type: 'bar',
+            height: 280,
+            fontFamily: 'Inter, sans-serif',
+            toolbar: { show: false }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                columnWidth: '45%'
+            }
+        },
+        colors: ['#64748B', '#C5A880'], // Slate Gray & Champagne Gold
+        grid: {
+            borderColor: '#F1F5F9'
+        },
+        xaxis: {
+            categories: ['Revenue', 'Expenses', 'Net Profit'],
+            labels: { style: { colors: '#64748B', fontSize: '10px' } }
+        },
+        yaxis: {
+            title: {
+                text: 'Amount ($ Billions)',
+                style: { color: '#64748B', fontSize: '11px', fontWeight: 600 }
+            },
+            labels: { style: { colors: '#64748B' } }
+        },
+        legend: {
+            position: 'top',
+            fontFamily: 'Inter',
+            labels: { colors: '#475569' }
+        },
+        tooltip: {
+            theme: 'light',
+            y: {
+                formatter: function (val) { return "$" + val + " Billion"; }
+            }
+        }
+    };
+    
+    const comparisonChart = new ApexCharts(document.querySelector("#chart-comparison"), chartOptions);
+    comparisonChart.render();
+
+    // 2. Real-Time Math Calculator
+    function calculateSimulation() {
+        const commCapVal = commSlider.value;
+        const logPctVal = parseFloat(logSlider.value);
+        const mktPctVal = parseFloat(mktSlider.value);
+
+        // Update Slider Labels
+        labelComm.innerText = commCapVal + "% Cap";
+        labelLog.innerText = (logPctVal > 0 ? "+" : "") + logPctVal + "% Change";
+        labelMkt.innerText = (mktPctVal > 0 ? "+" : "") + mktPctVal + "% Adjustment";
+
+        // Query pre-computed commission savings lookup list
+        const savedCommissions = commSavings[commCapVal] || 0.0;
+        
+        // Calculate adjustments
+        const logisticsDiff = rawLogistics * (logPctVal / 100.0);
+        const marketingDiff = rawMarketing * (mktPctVal / 100.0);
+
+        // Simulated results
+        const simExpenses = rawExpenses - savedCommissions + logisticsDiff + marketingDiff;
+        const simProfit = rawRevenue - simExpenses;
+        const simMargin = (simProfit / rawRevenue) * 100.0;
+        const profitVariance = simProfit - rawNetProfit;
+
+        // Render simulated metrics
+        lblSimProfit.innerText = "$" + (simProfit / 1e9).toFixed(3) + "B";
+        lblSimMargin.innerText = simMargin.toFixed(1) + "%";
+
+        const isPositive = profitVariance >= 0;
+        const formattedVariance = (isPositive ? "+" : "") + (profitVariance / 1e6).toFixed(1) + "M";
+        lblSimVariance.innerText = (isPositive ? "↑ " : "↓ ") + "$" + formattedVariance;
+
+        // Dynamic styling alerts
+        if (isPositive) {
+            varianceBanner.className = "p-6 rounded-2xl border transition-all duration-300 shadow-sm bg-emerald-50 border-emerald-200";
+            varianceBadge.className = "px-2.5 py-1 rounded-full text-xxs font-extrabold uppercase tracking-wide bg-emerald-100 text-emerald-800";
+            varianceBadge.innerText = profitVariance === 0 ? "PROFIT STABLE FORECAST" : "PROFIT GROWTH FORECAST";
+            lblSimVariance.className = "text-2xl font-black text-emerald-600";
+            
+            // Update chart color dynamically to champagne gold
+            comparisonChart.updateOptions({ colors: ['#64748B', '#C5A880'] });
+        } else {
+            varianceBanner.className = "p-6 rounded-2xl border transition-all duration-300 shadow-sm bg-rose-50 border-rose-200";
+            varianceBadge.className = "px-2.5 py-1 rounded-full text-xxs font-extrabold uppercase tracking-wide bg-rose-100 text-rose-800";
+            varianceBadge.innerText = "PROFIT LOSS FORECAST";
+            lblSimVariance.className = "text-2xl font-black text-rose-600";
+            
+            // Update chart color dynamically to burgundy red
+            comparisonChart.updateOptions({ colors: ['#64748B', '#9B2C2C'] });
+        }
+
+        // Update Chart series columns in real-time
+        comparisonChart.updateSeries([{
+            name: 'Baseline Ledger',
+            data: [(rawRevenue/1e9).toFixed(2), (rawExpenses/1e9).toFixed(2), (rawNetProfit/1e9).toFixed(2)]
+        }, {
+            name: 'Simulated Scenario',
+            data: [(rawRevenue/1e9).toFixed(2), (simExpenses/1e9).toFixed(2), (simProfit/1e9).toFixed(2)]
+        }]);
+    }
+
+    // Bind event listeners for input triggers
+    commSlider.addEventListener('input', calculateSimulation);
+    logSlider.addEventListener('input', calculateSimulation);
+    mktSlider.addEventListener('input', calculateSimulation);
+</script>
+{% endblock %}
