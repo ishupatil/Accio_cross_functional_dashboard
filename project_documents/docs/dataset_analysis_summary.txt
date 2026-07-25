@@ -1,0 +1,467 @@
+
+
+Cross Functional BI Dashboard – Dataset Analysis &amp; Summary
+1. Project Overview
+This dataset represents a complete retail enterprise ecosystem operating across multiple business functions.
+Business Domains Covered
+Business Function
+Description
+Physical Stores
+Offline retail operations
+E-Commerce Website
+Online sales platform
+Marketing Campaigns
+Promotions and advertisements
+Customer Loyalty Program
+Rewards and memberships
+Supply Chain &amp; Warehouses
+Logistics and inventory movement
+Manufacturing
+Product production operations
+Customer Support
+Ticket management and customer service
+Finance &amp; Accounting
+Revenue, expenses and profitability
+HR &amp; Payroll
+Employee management and salaries
+System Audit Monitoring
+System logs and operational monitoring
+Business Model
+This dataset simulates a large retail organization similar to Walmart or Amazon where multiple departments work together to manage customers, products, orders, inventory, employees, and finances.
+2. Dataset Size Overview
+Schema
+Tables
+Records
+Sales
+5
+780,104
+Customers
+5
+205,000
+Products
+4
+121,106
+Finance
+6
+183,947
+Stores
+3
+23,200
+HR
+2
+124,310
+Marketing
+3
+4,750
+Loyalty
+3
+40,004
+Support
+1
+10,000
+Call Center
+2
+50,000
+Supply Chain
+3
+38,505
+Manufacturing
+2
+15,010
+Audit
+6
+82,700
+Web Events
+2
+700,000
+Total Dataset Size
+More than 2 Million Records
+3. CORE Schema (Master Data)
+Purpose
+Stores master data used throughout the organization.
+Tables
+Table
+Rows
+dim_brand
+117
+dim_category
+10
+dim_date
+788
+dim_department
+10
+dim_expense_category
+15
+dim_region
+20
+Business Flow
+Category → Brand → Product → Sales
+Usage
+Product Classification
+Regional Analysis
+Time-Based Reporting
+Department Reporting
+4. SALES Schema
+Purpose
+Central transaction system capturing customer purchases.
+Tables
+Table
+Rows
+orders
+150,000
+order_items
+375,202
+payments
+142,450
+returns
+7,465
+shipments
+104,987
+Sales Process
+Customer → Order → Order Items → Payment → Shipment → Return (Optional)
+Important Fields
+Orders Table
+Column
+order_id
+cust_id
+store_id
+gross_total
+discount_amount
+net_total
+Order Items Table
+Column
+prod_id
+quantity
+unit_price
+net_amount
+Key KPIs
+Total Revenue
+Total Orders
+Average Order Value
+Return Rate
+Revenue Growth
+Top Products
+5. PRODUCTS Schema
+Purpose
+Product inventory and supplier management.
+Tables
+Table
+Rows
+products
+6,036
+inventory
+114,153
+suppliers
+117
+promotions
+800
+Business Flow
+Supplier → Product → Inventory → Promotion → Sales
+Key Insights
+Metric
+Value
+Total Products
+6,036
+Total Suppliers
+117
+Inventory Records
+114,153
+Promotions
+800
+KPIs
+Margin = Selling Price − Cost Price
+Product Profitability
+Inventory Levels
+Supplier Performance
+Promotion Effectiveness
+6. CUSTOMERS Schema
+Purpose
+Stores customer information and behavior.
+Tables
+Table
+Rows
+customers
+50,000
+addresses
+50,000
+reviews
+30,000
+wallets
+50,000
+loyalty_points
+25,000
+Customer Journey
+Customer → Address → Orders → Reviews → Wallet → Loyalty
+KPIs
+Customer Count
+Customer Growth
+Average Rating
+Wallet Usage
+Loyalty Participation
+7. MARKETING Schema
+Purpose
+Measures effectiveness of marketing campaigns.
+Tables
+Table
+Rows
+campaigns
+250
+ads_spend
+4,000
+email_clicks
+500
+KPIs
+KPI
+Formula
+ROI
+Revenue ÷ Ad Spend
+CTR
+Clicks ÷ Emails Sent
+Open Rate
+Emails Opened ÷ Emails Sent
+Dashboard Focus
+Campaign Performance
+Platform Performance
+Ad Spend Analysis
+Email Engagement
+8. FINANCE Schema
+Purpose
+Tracks all financial transactions.
+Tables
+Table
+Rows
+payments
+142,450
+expenses
+40,000
+accounts
+200
+transfer_log
+500
+revenue_summary
+788
+KPIs
+KPI
+Revenue
+Expenses
+Profit
+Cash Flow
+Formula
+Profit = Revenue − Expenses
+9. STORES Schema
+Purpose
+Tracks physical retail store performance.
+Tables
+Table
+Rows
+stores
+200
+employees
+3,000
+expenses
+20,000
+Business Flow
+Region → Store → Employees → Sales
+KPIs
+Store Revenue
+Store Expenses
+Revenue Per Employee
+Store Profitability
+10. HR Schema
+Purpose
+Employee workforce management.
+Tables
+Table
+Rows
+attendance
+88,310
+salary_history
+36,000
+KPIs
+Attendance %
+Salary Trends
+Absenteeism Rate
+Workforce Growth
+11. PAYROLL Schema
+Tables
+Table
+Rows
+pay_slips
+12,000
+tax_brackets
+6
+KPIs
+Gross Salary
+Net Salary
+Tax Deduction
+Payroll Cost
+12. LOYALTY Schema
+Purpose
+Customer rewards and membership management.
+Tables
+Table
+Rows
+members
+30,000
+redemptions
+10,000
+tiers
+4
+Membership Levels
+Bronze
+Silver
+Gold
+Platinum
+KPIs
+Active Members
+Redemption Rate
+Points Earned
+Tier Distribution
+13. SUPPORT Schema
+Purpose
+Customer complaint management.
+Tables
+Table
+Rows
+tickets
+10,000
+Important Fields
+Column
+category
+priority
+status
+created_date
+resolved_date
+KPIs
+Open Tickets
+Resolution Time
+Priority Distribution
+SLA Compliance
+14. CALL CENTER Schema
+Purpose
+Tracks customer call interactions.
+Tables
+Table
+Rows
+calls
+25,000
+transcripts
+25,000
+Special Feature
+Sentiment Analysis available using:
+sentiment_score
+KPIs
+Call Volume
+Average Call Duration
+Customer Sentiment
+Resolution Rate
+15. SUPPLY CHAIN Schema
+Purpose
+Inventory and logistics management.
+Tables
+Table
+Rows
+warehouses
+5
+shipments
+2,000
+inventory_snapshots
+36,500
+Business Flow
+Supplier → Warehouse → Inventory → Store → Customer
+KPIs
+Inventory Turnover
+Delayed Shipments
+Warehouse Utilization
+Inventory Aging
+16. MANUFACTURING Schema
+Purpose
+Product manufacturing operations.
+Tables
+Table
+Rows
+production_lines
+10
+work_orders
+15,000
+Important Fields
+Column
+quantity_produced
+rejected_quantity
+capacity_per_hour
+KPI
+Production Efficiency = Quantity Produced ÷ Capacity
+17. AUDIT Schema
+Purpose
+System monitoring and governance.
+Tables
+Table
+Rows
+api_requests
+50,000
+application_logs
+20,000
+record_changes
+10,000
+refund_log
+2,000
+refund_failures
+200
+KPIs
+API Success Rate
+Average Response Time
+Error Rate
+Refund Failure Rate
+Dashboard
+System Health Dashboard
+18. WEB EVENTS Schema
+Purpose
+Tracks customer website activity.
+Tables
+Table
+Rows
+page_views
+500,000
+events
+200,000
+User Journey
+Customer → Page View → Click → Product View → Purchase
+KPIs
+Website Traffic
+Device Usage
+User Journey
+Conversion Funnel
+19. Recommended Team Allocation
+Member
+Assigned Schemas
+Member 1
+Sales, Products
+Member 2
+Customers, Loyalty, Web Events
+Member 3
+Marketing, Finance
+Member 4
+Stores, HR, Payroll
+Member 5
+Support, Call Center, Supply Chain, Manufacturing, Audit
+20. Recommended Dashboards
+Dashboard
+Executive Dashboard
+Sales Dashboard
+Customer Analytics Dashboard
+Product &amp; Inventory Dashboard
+Marketing ROI Dashboard
+Finance Dashboard
+Store Performance Dashboard
+HR Dashboard
+Support Dashboard
+Supply Chain Dashboard
+Audit Monitoring Dashboard
+Final Recommendation
+Before development begins, the team should first create:
+ER Diagram (Relationship Map)
+Data Dictionary
+Dashboard Wireframes
+GitHub Branch Strategy
+Streamlit Page Structure
+This will ensure all team members can work independently and merge their modules smoothly into a single Cross Functional BI Dashboard.

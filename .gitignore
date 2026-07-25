@@ -29,3 +29,22 @@ data/processed/*
 # OS files
 Thumbs.db
 Desktop.ini
+
+# Archives and Large Datasets
+*.zip
+*.rar
+*.7z
+Datasets - Cross Functional Bi Dashboard/
+Revenue_By_Region_Package/
+db.sqlite3
+*.stackdump
+git
+
+# Documents and images (Moved to reference folder, not tracked in git)
+project_documents/raw_datasets/
+*.png
+*.jpeg
+*.jpg
+*.docx
+*.xls
+*.xlsx

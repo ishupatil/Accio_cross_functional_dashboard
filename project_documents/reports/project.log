@@ -1,0 +1,253 @@
+[2026-07-03 13:11:45] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-03 13:11:46] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-03 13:47:40] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-03 13:47:40] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-03 13:47:40] [INFO] [connection.py:96] Database connection verified successfully on database: 'test'
+[2026-07-03 14:40:34] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-03 14:40:34] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:26:33] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:26:33] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:26:33] [INFO] [extract.py:52] Starting Retailmart Finance Analytics Extraction Pipeline.
+[2026-07-17 11:26:33] [INFO] [connection.py:96] Database connection verified successfully on database: 'test'
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'customer.customers'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'customer.customers': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'customer.customers' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'dealer.dealers'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'dealer.dealers': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'dealer.dealers' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'dealer_network.dealer_commissions'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'dealer_network.dealer_commissions': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'dealer_network.dealer_commissions' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'dealer_network.dealer_targets'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'dealer_network.dealer_targets': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'dealer_network.dealer_targets' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'dealer_network.regional_offices'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'dealer_network.regional_offices': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'dealer_network.regional_offices' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.dealer_payouts'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'finance_accounting.dealer_payouts': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'finance_accounting.dealer_payouts' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.gl_accounts'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'finance_accounting.gl_accounts': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'finance_accounting.gl_accounts' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.ledger_entries'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'finance_accounting.ledger_entries': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'finance_accounting.ledger_entries' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.tax_records'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'finance_accounting.tax_records': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'finance_accounting.tax_records' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'location_reference.cities'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'location_reference.cities': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'location_reference.cities' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'location_reference.states'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'location_reference.states': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'location_reference.states' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'pricing_management.price_master'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'pricing_management.price_master': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'pricing_management.price_master' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'product_management.vehicle_models'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'product_management.vehicle_models': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'product_management.vehicle_models' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'product_management.vehicle_variants'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'product_management.vehicle_variants': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'product_management.vehicle_variants' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.invoices'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'sales_transaction.invoices': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'sales_transaction.invoices' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.order_items'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'sales_transaction.order_items': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'sales_transaction.order_items' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.orders'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'sales_transaction.orders': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'sales_transaction.orders' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:26:33] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.payments'...
+[2026-07-17 11:26:33] [ERROR] [extract.py:40] Error extracting table 'sales_transaction.payments': Query must be a string unless using sqlalchemy.
+[2026-07-17 11:26:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.00 seconds.
+[2026-07-17 11:26:33] [WARNING] [extract.py:66] Skipping save for table 'sales_transaction.payments' as the extracted data was empty.
+[2026-07-17 11:26:33] [INFO] [extract.py:78] Extraction Pipeline completed. Successfully extracted and saved 0/18 tables.
+[2026-07-17 11:27:41] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:27:41] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:27:53] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:27:53] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:28:06] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:28:06] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:28:36] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:28:36] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:29:29] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:29:29] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:30:22] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:30:22] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:30:33] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:30:33] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:30:33] [INFO] [extract.py:52] Starting Retailmart Finance Analytics Extraction Pipeline.
+[2026-07-17 11:30:33] [INFO] [connection.py:96] Database connection verified successfully on database: 'test'
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'customer.customers'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 5000 rows and 19 columns for table 'customer.customers'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.07 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (5000, 19) to: data\raw\customer_customers.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'dealer.dealers'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 200 rows and 16 columns for table 'dealer.dealers'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (200, 16) to: data\raw\dealer_dealers.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'dealer_network.dealer_commissions'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 3000 rows and 9 columns for table 'dealer_network.dealer_commissions'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.02 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (3000, 9) to: data\raw\dealer_network_dealer_commissions.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'dealer_network.dealer_targets'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 4800 rows and 8 columns for table 'dealer_network.dealer_targets'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.02 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (4800, 8) to: data\raw\dealer_network_dealer_targets.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'dealer_network.regional_offices'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 20 rows and 4 columns for table 'dealer_network.regional_offices'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (20, 4) to: data\raw\dealer_network_regional_offices.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.dealer_payouts'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 2500 rows and 7 columns for table 'finance_accounting.dealer_payouts'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (2500, 7) to: data\raw\finance_accounting_dealer_payouts.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.gl_accounts'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 80 rows and 6 columns for table 'finance_accounting.gl_accounts'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (80, 6) to: data\raw\finance_accounting_gl_accounts.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.ledger_entries'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 15000 rows and 10 columns for table 'finance_accounting.ledger_entries'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.08 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (15000, 10) to: data\raw\finance_accounting_ledger_entries.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'finance_accounting.tax_records'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 7000 rows and 8 columns for table 'finance_accounting.tax_records'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.09 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (7000, 8) to: data\raw\finance_accounting_tax_records.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'location_reference.cities'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 200 rows and 7 columns for table 'location_reference.cities'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (200, 7) to: data\raw\location_reference_cities.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'location_reference.states'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 36 rows and 6 columns for table 'location_reference.states'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (36, 6) to: data\raw\location_reference_states.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'pricing_management.price_master'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 1440 rows and 10 columns for table 'pricing_management.price_master'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (1440, 10) to: data\raw\pricing_management_price_master.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'product_management.vehicle_models'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 25 rows and 9 columns for table 'product_management.vehicle_models'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (25, 9) to: data\raw\product_management_vehicle_models.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'product_management.vehicle_variants'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 96 rows and 11 columns for table 'product_management.vehicle_variants'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.01 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (96, 11) to: data\raw\product_management_vehicle_variants.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.invoices'...
+[2026-07-17 11:30:33] [INFO] [extract.py:37] Successfully extracted 7000 rows and 14 columns for table 'sales_transaction.invoices'.
+[2026-07-17 11:30:33] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.05 seconds.
+[2026-07-17 11:30:33] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (7000, 14) to: data\raw\sales_transaction_invoices.csv
+[2026-07-17 11:30:33] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:33] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.order_items'...
+[2026-07-17 11:30:34] [INFO] [extract.py:37] Successfully extracted 7500 rows and 12 columns for table 'sales_transaction.order_items'.
+[2026-07-17 11:30:34] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.06 seconds.
+[2026-07-17 11:30:34] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (7500, 12) to: data\raw\sales_transaction_order_items.csv
+[2026-07-17 11:30:34] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:34] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.orders'...
+[2026-07-17 11:30:34] [INFO] [extract.py:37] Successfully extracted 7000 rows and 16 columns for table 'sales_transaction.orders'.
+[2026-07-17 11:30:34] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.06 seconds.
+[2026-07-17 11:30:34] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (7000, 16) to: data\raw\sales_transaction_orders.csv
+[2026-07-17 11:30:34] [INFO] [helpers.py:19] Starting execution of function 'extract_table'...
+[2026-07-17 11:30:34] [INFO] [extract.py:32] Extracting data for table: 'sales_transaction.payments'...
+[2026-07-17 11:30:34] [INFO] [extract.py:37] Successfully extracted 8000 rows and 11 columns for table 'sales_transaction.payments'.
+[2026-07-17 11:30:34] [INFO] [helpers.py:24] Finished function 'extract_table' in 0.03 seconds.
+[2026-07-17 11:30:34] [INFO] [helpers.py:59] Successfully saved DataFrame of shape (8000, 11) to: data\raw\sales_transaction_payments.csv
+[2026-07-17 11:30:34] [INFO] [extract.py:78] Extraction Pipeline completed. Successfully extracted and saved 18/18 tables.
+[2026-07-17 11:36:28] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:36:28] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-17 11:37:21] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-17 11:37:22] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:51:34] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:51:34] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:51:45] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:51:45] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:51:54] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:51:54] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:52:03] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:52:03] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:52:42] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:52:42] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:53:49] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:53:49] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:53:55] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:53:55] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:54:09] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:54:09] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:54:15] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:54:15] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:54:47] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:54:47] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:55:18] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:55:19] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-19 14:55:34] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-19 14:55:34] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 17:44:41] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 17:44:41] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 17:44:47] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 17:44:47] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 17:45:06] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 17:45:06] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 18:21:19] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 18:21:19] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 18:21:28] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 18:21:28] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 18:21:33] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 18:21:33] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 18:41:20] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 18:41:20] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
+[2026-07-25 18:49:22] [INFO] [config.py:16] Loaded environment configuration from: E:\SQL ACCIO JOB\Cross functional dashboard\.env
+[2026-07-25 18:49:22] [INFO] [connection.py:42] SQLAlchemy Database Engine initialized successfully.
