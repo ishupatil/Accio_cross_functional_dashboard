@@ -140,5 +140,10 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# CSRF Trusted Origins for live Render HTTPS domains
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+]
+
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
