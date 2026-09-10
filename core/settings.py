@@ -46,7 +46,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,6 +53,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+try:
+    import whitenoise
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+except ImportError:
+    pass
 
 ROOT_URLCONF = 'core.urls'
 
@@ -76,7 +81,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database configurations
-import dj_database_url
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 
 DB_NAME = os.environ.get('DB_NAME', 'test')
 DB_USER = os.environ.get('DB_USER', 'postgres')
@@ -96,7 +104,7 @@ DATABASES = {
 }
 
 # Override with DATABASE_URL if running in a cloud deployment environment (e.g. Render)
-if os.environ.get('DATABASE_URL'):
+if os.environ.get('DATABASE_URL') and dj_database_url:
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, conn_health_checks=True)
 
 
