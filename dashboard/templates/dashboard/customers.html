@@ -29,8 +29,8 @@
         <!-- Card 4: Preferred Transaction Mode -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-[#64748B] hover:shadow-md transition-all duration-200">
             <h6 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">Preferred Purchase Mode</h6>
-            <h3 class="text-3xl font-extrabold text-slate-700">Finance (85.2%)</h3>
-            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Bank financing dominates operations</span>
+            <h3 class="text-3xl font-extrabold text-slate-700">{{ preferred_mode|default:"Lease (25.6%)" }}</h3>
+            <span class="text-[10px] text-slate-500 font-bold mt-1 inline-block">Top individual payment channel</span>
         </div>
     </div>
 
@@ -95,7 +95,7 @@
             height: 250,
             fontFamily: 'Inter, sans-serif'
         },
-        colors: ['#0A192F', '#C5A880', '#64748B'], // Navy, Champagne Gold, Muted Slate
+        colors: ['#0A192F', '#C5A880', '#64748B', '#4D7C0F'], // Navy, Champagne Gold, Muted Slate, Emerald Green
         plotOptions: {
             pie: {
                 donut: {

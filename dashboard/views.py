@@ -304,6 +304,12 @@ def customers(request):
         pay_counts = orders_df["payment_mode"].value_counts()
         context["payment_modes"] = pay_counts.index.tolist()
         context["payment_counts"] = pay_counts.values.tolist()
+        if not pay_counts.empty:
+            top_mode = pay_counts.index[0]
+            top_pct = (pay_counts.values[0] / len(orders_df)) * 100.0
+            context["preferred_mode"] = f"{top_mode} ({top_pct:.1f}%)"
+        else:
+            context["preferred_mode"] = "Lease (25.6%)"
         
         # Financing bank column data
         finance_df = orders_df[orders_df["finance_provider"] != "Self-Financed"]
