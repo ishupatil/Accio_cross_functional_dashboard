@@ -24,18 +24,33 @@ ORDER BY month ASC, category_code ASC;
 
 -- OBJECTIVE: Join orders, dealers, and commissions to calculate total sales 
 -- and payout efficiency percentages for each showroom.
+-- Uses pre-aggregated CTEs to avoid Many-to-Many row duplication.
 
+WITH OrderAgg AS (
+    SELECT 
+        dealer_id,
+        COUNT(order_id) AS total_orders,
+        SUM(net_amount) AS total_revenue
+    FROM sales_transaction.orders
+    GROUP BY dealer_id
+),
+CommAgg AS (
+    SELECT 
+        dealer_id,
+        SUM(total_commission) AS total_commission
+    FROM dealer_network.dealer_commissions
+    GROUP BY dealer_id
+)
 SELECT 
     d.dealer_name,
-    COUNT(o.order_id) AS total_orders,
-    SUM(o.net_amount) AS total_revenue,
-    COALESCE(SUM(c.total_commission), 0) AS total_commission,
+    COALESCE(o.total_orders, 0) AS total_orders,
+    COALESCE(o.total_revenue, 0) AS total_revenue,
+    COALESCE(c.total_commission, 0) AS total_commission,
     -- Calculate what % of sales revenue goes back to the dealer as commission
-    ROUND((COALESCE(SUM(c.total_commission), 0) / SUM(o.net_amount) * 100), 2) AS payout_ratio_pct
-FROM sales_transaction.orders o
-LEFT JOIN dealer.dealers d ON o.dealer_id = d.dealer_id
-LEFT JOIN dealer_network.dealer_commissions c ON o.dealer_id = c.dealer_id
-GROUP BY d.dealer_name
+    ROUND((COALESCE(c.total_commission, 0) / NULLIF(o.total_revenue, 0) * 100), 2) AS payout_ratio_pct
+FROM dealer.dealers d
+LEFT JOIN OrderAgg o ON d.dealer_id = o.dealer_id
+LEFT JOIN CommAgg c ON d.dealer_id = c.dealer_id
 ORDER BY total_revenue DESC;
 
 

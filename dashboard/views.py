@@ -25,29 +25,34 @@ def get_monthly_finance_summary():
     ledger_df = get_db_table("finance_accounting.ledger_entries")
     gl_accounts_df = get_db_table("finance_accounting.gl_accounts")
     
-    # Process monthly revenues from orders
+    # Process monthly vehicle sales revenues from orders
     orders_df["order_date"] = pd.to_datetime(orders_df["order_date"])
-    orders_df["month"] = orders_df["order_date"].dt.to_period("M")
+    orders_df["month"] = orders_df["order_date"].dt.to_period("M").astype(str)
     monthly_rev = orders_df.groupby("month")["net_amount"].sum().reset_index()
-    monthly_rev.rename(columns={"net_amount": "total_revenue"}, inplace=True)
+    monthly_rev.rename(columns={"net_amount": "vehicle_revenue"}, inplace=True)
     
-    # Process monthly opex from ledger entries
+    # Process monthly spares, service income and opex from ledger entries
     ledger_df["transaction_date"] = pd.to_datetime(ledger_df["transaction_date"])
     merged_ledger = pd.merge(ledger_df, gl_accounts_df, on="account_id")
-    merged_ledger["month"] = merged_ledger["transaction_date"].dt.to_period("M")
-    merged_ledger["category_code"] = merged_ledger["account_code"].str[:4]
+    merged_ledger["month"] = merged_ledger["transaction_date"].dt.to_period("M").astype(str)
+    merged_ledger["cat_code"] = merged_ledger["account_code"].astype(str).str[:4]
     
+    # Other Income (Spares 4100, Service 4200)
+    spares = merged_ledger[merged_ledger["cat_code"] == "4100"].groupby("month")["credit_amount"].sum().reset_index(name="spares_revenue")
+    service = merged_ledger[merged_ledger["cat_code"] == "4200"].groupby("month")["credit_amount"].sum().reset_index(name="service_revenue")
+    
+    # Expenses by Category
     expenses_df = merged_ledger[merged_ledger["account_type"] == "Expense"]
-    monthly_exp_cat = expenses_df.groupby(["month", "category_code"])["debit_amount"].sum().unstack(fill_value=0).reset_index()
+    monthly_exp_cat = expenses_df.groupby(["month", "cat_code"])["debit_amount"].sum().unstack(fill_value=0).reset_index()
     
-    # Map raw chart accounts to C-suite categories
+    # Correct mapping based on gl_accounts definition
     mapping = {
         "5000": "cogs",
         "5100": "manufacturing_costs",
         "5200": "salaries_wages",
-        "5300": "dealer_commissions",
+        "5300": "marketing_costs",
         "5400": "logistics_costs",
-        "5500": "marketing_costs",
+        "5500": "dealer_commissions",
         "5600": "admin_costs"
     }
     for code, col in mapping.items():
@@ -55,11 +60,16 @@ def get_monthly_finance_summary():
             monthly_exp_cat[code] = 0.0
         monthly_exp_cat.rename(columns={code: col}, inplace=True)
         
-    # Merge aggregates
-    summary = pd.merge(monthly_rev, monthly_exp_cat, on="month", how="outer").fillna(0.0)
-    summary["month"] = summary["month"].astype(str)
+    # Merge all revenue and expense aggregates
+    summary = pd.merge(monthly_rev, spares, on="month", how="outer").fillna(0.0)
+    summary = pd.merge(summary, service, on="month", how="outer").fillna(0.0)
+    summary = pd.merge(summary, monthly_exp_cat, on="month", how="outer").fillna(0.0)
+    summary.sort_values(by="month", inplace=True)
     
-    # Compute totals & margins
+    # Compute Total Revenue (Vehicle + Spares + Service)
+    summary["total_revenue"] = summary["vehicle_revenue"] + summary["spares_revenue"] + summary["service_revenue"]
+    
+    # Compute Total Expenses & Net Profit
     expense_cols = list(mapping.values())
     summary["total_expenses"] = summary[expense_cols].sum(axis=1)
     summary["net_profit"] = summary["total_revenue"] - summary["total_expenses"]
@@ -86,21 +96,20 @@ def get_regional_sales_summary():
 
 def get_dealer_performance_summary():
     """
-    Computes showroom ledger performance, mapping cities and states dynamically.
+    Computes showroom ledger performance, mapping cities, states, and commissions dynamically.
     """
     orders_df = get_db_table("sales_transaction.orders")
     dealers_df = get_db_table("dealer.dealers")
     cities_df = get_db_table("location_reference.cities")
     states_df = get_db_table("location_reference.states")
-    payouts_df = get_db_table("finance_accounting.dealer_payouts")
+    comm_df = get_db_table("dealer_network.dealer_commissions")
     
     orders_agg = orders_df.groupby("dealer_id").agg(
         total_orders=("order_id", "count"),
         total_revenue=("net_amount", "sum")
     ).reset_index()
     
-    comm_agg = payouts_df.groupby("dealer_id")["payout_amount"].sum().reset_index()
-    comm_agg.rename(columns={"payout_amount": "total_commission"}, inplace=True)
+    comm_agg = comm_df.groupby("dealer_id")["total_commission"].sum().reset_index()
     
     perf = pd.merge(dealers_df[['dealer_id', 'dealer_name', 'city_id', 'status']], orders_agg, on="dealer_id", how="left").fillna(0.0)
     perf = pd.merge(perf, comm_agg, on="dealer_id", how="left").fillna(0.0)

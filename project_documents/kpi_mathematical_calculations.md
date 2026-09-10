@@ -7,19 +7,15 @@ This document compiles the exact mathematical formulas, PostgreSQL database sour
 ## 📈 1. Core Financial KPIs (Home Page & Simulator)
 
 ### A. Gross Revenue (\(R_{\text{gross}}\))
-* **Business Definition:** The total billing value generated from retail vehicle sales before deductions.
+* **Business Definition:** The total corporate invoicing revenue generated from vehicle sales, spares, and service income.
 * **Mathematical Formula:**
-  \[R_{\text{gross}} = \sum_{i=1}^{n} \text{net\_amount}_i\]
-* **PostgreSQL Source:**
-  * Schema & Table: `sales_transaction.orders`
-  * Column: `net_amount`
-* **Pandas Implementation:**
-  ```python
-  total_revenue = orders_df["net_amount"].sum()
-  ```
+  \[R_{\text{gross}} = R_{\text{vehicle}} + R_{\text{spares}} + R_{\text{service}}\]
+  \[R_{\text{vehicle}} = \sum \text{net\_amount} \quad (\text{from } \text{sales\_transaction.orders})\]
+  \[R_{\text{spares}} = \sum \text{credit\_amount} \quad (\text{GL account 4100})\]
+  \[R_{\text{service}} = \sum \text{credit\_amount} \quad (\text{GL account 4200})\]
 
 ### B. Operating Expenses (\(E_{\text{opex}}\))
-* **Business Definition:** The total cash outflows required to run operations, including COGS, manufacturing, payroll, commissions, marketing, administration, and logistics.
+* **Business Definition:** The total cash outflows required to run operations, including COGS, manufacturing, payroll, marketing, logistics, commissions, and administration.
 * **Mathematical Formula:**
   \[E_{\text{opex}} = \sum_{j=1}^{m} \text{debit\_amount}_j \quad \text{where } \text{account\_type} = \text{'Expense'}\]
 * **PostgreSQL Source:**
@@ -28,10 +24,10 @@ This document compiles the exact mathematical formulas, PostgreSQL database sour
     * `5000`: Cost of Goods Sold (COGS)
     * `5100`: Manufacturing Costs
     * `5200`: Salaries & Wages
-    * `5300`: Dealer Commissions
-    * `5400`: Logistics Costs
-    * `5500`: Marketing Costs
-    * `5600`: Administration Costs
+    * `5300`: Marketing Expenses
+    * `5400`: Logistics Expenses
+    * `5500`: Dealer Commissions
+    * `5600`: Administrative Expenses
 * **Pandas Implementation:**
   ```python
   expenses_df = merged_ledger[merged_ledger["account_type"] == "Expense"]
